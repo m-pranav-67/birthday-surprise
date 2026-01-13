@@ -4,9 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
        INTRO FLOATING HEARTS
        ========================= */
     const intro = document.getElementById("intro");
+    let introHeartsInterval = null;
 
     if (intro) {
-        setInterval(() => {
+        introHeartsInterval = setInterval(() => {
+            // Stop hearts when intro leaves viewport
+            if (intro.getBoundingClientRect().bottom < 0) {
+                clearInterval(introHeartsInterval);
+                return;
+            }
+
             for (let i = 0; i < 5; i++) {
                 const heart = document.createElement("div");
                 heart.className = "heart";
@@ -24,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =========================
-       HEART BURST (ONE SHOT)
+       HEART BURST
        ========================= */
     function heartBurst() {
         const cx = window.innerWidth / 2;
@@ -49,14 +56,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =========================
+       GENTLE PETAL FALL
+       ========================= */
+    let petalsStarted = false;
+
+    function startPetals() {
+        if (petalsStarted) return;
+        petalsStarted = true;
+
+        setInterval(() => {
+            const petal = document.createElement("div");
+            petal.className = "petal";
+            petal.innerHTML = "🌸";
+
+            petal.style.left = Math.random() * 100 + "vw";
+            petal.style.animationDuration =
+                (7 + Math.random() * 5) + "s";
+
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 12000);
+        }, 1200); // slow & gentle
+    }
+
+    /* =========================
        SAFE SECTION TRANSITIONS
        ========================= */
-const sections = [
-    document.getElementById("timeline"),
-    document.getElementById("message"),
-    document.getElementById("outro")
-];
-
+    const sections = [
+        document.getElementById("timeline"),
+        document.getElementById("message"),
+        document.getElementById("outro")
+    ];
 
     const triggered = new Set();
 
@@ -70,16 +99,26 @@ const sections = [
                 section.getBoundingClientRect().top < triggerPoint
             ) {
                 section.classList.add("active");
-                heartBurst();
+
+                // 💥 Heart burst for timeline & message only
+                if (section.id === "timeline" || section.id === "message") {
+                    heartBurst();
+                }
+
+                // 🌸 Start petals when timeline appears
+                if (section.id === "timeline") {
+                    startPetals();
+                }
+
                 triggered.add(section);
             }
         });
     }
 
-    // Run once on load (important)
+    // Initial check
     revealOnScroll();
 
-    // Run on scroll
+    // Scroll listener
     window.addEventListener("scroll", revealOnScroll);
 });
 
