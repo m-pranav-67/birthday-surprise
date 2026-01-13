@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
             h.className = "burst-heart";
             h.innerHTML = ["❤️", "💖", "💕"][Math.floor(Math.random() * 3)];
 
-            const x = (Math.random() - 0.5) * 1000;
-            const y = (Math.random() - 0.5) * 1000;
+            const x = (Math.random() - 0.5) * 700;
+            const y = (Math.random() - 0.5) * 700;
 
             h.style.left = cx + "px";
             h.style.top = cy + "px";
@@ -44,17 +44,19 @@ document.addEventListener("DOMContentLoaded", () => {
             h.style.setProperty("--y", y + "px");
 
             document.body.appendChild(h);
-            setTimeout(() => h.remove(), 2500);
+            setTimeout(() => h.remove(), 1200);
         }
     }
 
     /* =========================
        SAFE SECTION TRANSITIONS
        ========================= */
-    const sections = [
-        document.getElementById("timeline"),
-        document.getElementById("message")
-    ];
+const sections = [
+    document.getElementById("timeline"),
+    document.getElementById("message"),
+    document.getElementById("outro")
+];
+
 
     const triggered = new Set();
 
@@ -95,4 +97,3 @@ function openFullscreen(img) {
 function closeFullscreen() {
     document.getElementById("fullscreen").style.display = "none";
 }
-
