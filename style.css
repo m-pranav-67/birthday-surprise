@@ -63,6 +63,20 @@ body {
 }
 
 /* =========================
+   SECTION TRANSITION
+   ========================= */
+.section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================
    TIMELINE SECTION
    ========================= */
 .memories {
@@ -110,7 +124,7 @@ body {
 }
 
 /* =========================
-   LOVE LETTER (PARAGRAPH)
+   LOVE LETTER
    ========================= */
 .love-letter {
     min-height: 100vh;
@@ -120,7 +134,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
 }
 
 .love-letter h2 {
@@ -148,20 +161,6 @@ body {
     to {
         box-shadow: 0 15px 45px rgba(255, 64, 129, 0.6);
     }
-}
-
-/* =========================
-   SECTION TRANSITION (SAFE)
-   ========================= */
-.section {
-    opacity: 1;               /* visible by default */
-    transform: none;
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-.section.active {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 /* =========================
@@ -206,31 +205,16 @@ body {
 }
 
 /* =========================
-   FADE IN KEYFRAME
+   OUTRO
    ========================= */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-/* SAFE SCROLL TRANSITION */
-.section {
-    opacity: 0.9;
-    transform: translateY(40px);
-}
-
-.section.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-/* OUTRO SECTION */
 .outro {
+    position: relative;
     min-height: 100vh;
     background: linear-gradient(135deg, #fff0f5, #ffe6f0);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
     padding: 60px 20px;
 }
 
@@ -251,19 +235,54 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-.outro button {
-    margin-top: 35px;
-    padding: 14px 30px;
-    font-size: 1em;
-    border: none;
-    border-radius: 30px;
-    background: #ff4081;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+/* =========================
+   PETALS
+   ========================= */
+.petal {
+    position: fixed;
+    top: -20px;
+    font-size: 18px;
+    opacity: 0.8;
+    animation: petalFall linear forwards;
+    pointer-events: none;
+    z-index: 6;
 }
 
-.outro button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(255,64,129,0.5);
+@keyframes petalFall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   OUTRO TEXT ZOOM-IN
+   ========================= */
+.outro h2,
+.outro p {
+    transform: scale(0.96);
+    opacity: 0;
+    transition: transform 1.6s ease, opacity 1.6s ease;
+}
+
+.outro.active h2,
+.outro.active p {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.outro h2 {
+    transition-delay: 0.2s;
+}
+
+.outro p {
+    transition-delay: 0.6s;
+}
+
+/* =========================
+   FADE-IN KEYFRAME
+   ========================= */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
